@@ -1,11 +1,8 @@
 package com.github.leandrokhalel.parking.controller;
 
-import com.github.leandrokhalel.parking.dtos.CreateVehicleRequestDTO;
 import com.github.leandrokhalel.parking.dtos.ParkVehicleRequestDTO;
-import com.github.leandrokhalel.parking.dtos.VehicleResponseDTO;
 import com.github.leandrokhalel.parking.entities.ParkingSpace;
 import com.github.leandrokhalel.parking.service.ParkingSpaceService;
-import com.github.leandrokhalel.parking.service.VehicleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
