@@ -27,28 +27,4 @@ public class ParkingSpaceService {
     public ParkingSpace save(ParkingSpace parkingSpace) {
         return this.parkingSpaceRepository.save(parkingSpace);
     }
-
-    @Transactional
-    public ParkingSpace parkVehicle(UUID parkingSpaceId, UUID vehicleId) {
-        ParkingSpace parkingSpace = this.parkingSpaceRepository.findById(parkingSpaceId)
-                .orElseThrow(() -> new ParkingSpaceNotFoundException("Parking space not found"));
-
-        Vehicle vehicle = this.vehicleRepository.findById(vehicleId)
-                .orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
-
-        if (parkingSpace.isOccupied()) {
-            throw new RuntimeException("Parking space is already occupied");
-        }
-
-        if (parkingSpace.getVehicleType() != vehicle.getType()) {
-            throw new RuntimeException("Vehicle type is not compatible with parking space");
-        }
-
-        parkingSpace.setVehicle(vehicle);
-        parkingSpace.setOccupied(true);
-
-        vehicleRepository.updateParkingSpace(vehicle.getId(), parkingSpace);
-
-        return this.parkingSpaceRepository.save(parkingSpace);
-    }
 }

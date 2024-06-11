@@ -22,7 +22,7 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column
+    @Column(unique = true, nullable = false, length = 7)
     private String plate;
 
     @Column
@@ -34,10 +34,11 @@ public class Vehicle {
     @Column
     private String color;
 
-    @Column
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private VehicleType type;
 
-    @OneToOne
     @JsonIgnore
+    @OneToOne
     private ParkingSpace parkingSpace;
 }

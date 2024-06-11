@@ -1,33 +1,31 @@
 package com.github.leandrokhalel.parking.service;
 
+import com.github.leandrokhalel.parking.mapper.VehicleMapper;
 import com.github.leandrokhalel.parking.entities.Vehicle;
 import com.github.leandrokhalel.parking.repository.VehicleRepository;
 import com.github.leandrokhalel.parking.dtos.CreateVehicleRequestDTO;
 import com.github.leandrokhalel.parking.dtos.VehicleResponseDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class VehicleService {
 
     private VehicleRepository vehicleRepository;
+    private VehicleMapper vehicleMapper;
 
-    @Autowired
-    public VehicleService(VehicleRepository vehicleRepository) {
+    public VehicleService(VehicleMapper vehicleMapper, VehicleRepository vehicleRepository) {
+        this.vehicleMapper = vehicleMapper;
         this.vehicleRepository = vehicleRepository;
     }
 
     public VehicleResponseDTO save(CreateVehicleRequestDTO createVehicleRequestDTO) {
-        Vehicle vehicle = Vehicle.builder()
-                .brand(createVehicleRequestDTO.brand())
-                .color(createVehicleRequestDTO.color())
-                .model(createVehicleRequestDTO.model())
-                .plate(createVehicleRequestDTO.plate())
-                .type(createVehicleRequestDTO.type())
-                .build();
+        boolean plateAlreadyRegistered = vehicleRepository.existsByPlate(createVehicleRequestDTO.plate());
+        if (plateAlreadyRegistered) {
+            throw new RuntimeException("Plate already registered");
+        }
 
+        Vehicle vehicle = vehicleMapper.map(createVehicleRequestDTO);
         this.vehicleRepository.save(vehicle);
-
         return VehicleResponseDTO.builder()
                 .id(vehicle.getId())
                 .brand(vehicle.getBrand())
@@ -36,5 +34,6 @@ public class VehicleService {
                 .plate(vehicle.getPlate())
                 .type(vehicle.getType())
                 .build();
+
     }
 }

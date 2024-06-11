@@ -1,6 +1,8 @@
 package com.github.leandrokhalel.parking.dtos;
 
 import com.github.leandrokhalel.parking.enums.VehicleType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 
@@ -16,6 +18,8 @@ public record CreateVehicleRequestDTO(
         String brand,
         String model,
         String color,
+
+        @NotNull
         VehicleType type
 ) {
 

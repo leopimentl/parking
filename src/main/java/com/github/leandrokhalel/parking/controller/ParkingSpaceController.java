@@ -28,19 +28,10 @@ public class ParkingSpaceController {
     @PostMapping("/")
     public ResponseEntity<ParkingSpace> save(@Valid @RequestBody ParkingSpace parkingSpace) {
         parkingSpace = this.parkingSpaceService.save(parkingSpace);
-
         URI uriLocation = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(parkingSpace.getId())
                 .toUri();
-
         return ResponseEntity.created(uriLocation).body(parkingSpace);
-    }
-
-    @PostMapping("/park-vehicle")
-    public ResponseEntity<ParkingSpace> parkVehicle(@RequestBody ParkVehicleRequestDTO parkVehicleRequestDTO) {
-        ParkingSpace parkingSpace = this.parkingSpaceService.parkVehicle(parkVehicleRequestDTO.parkingSpaceId(), parkVehicleRequestDTO.vehicleId());
-
-        return ResponseEntity.ok().body(parkingSpace);
     }
 }

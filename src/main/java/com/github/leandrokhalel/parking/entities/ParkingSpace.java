@@ -19,7 +19,11 @@ public class ParkingSpace {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Enumerated(EnumType.ORDINAL)
+    @Column(nullable = false)
     private VehicleType vehicleType;
+
+    @Column
     private boolean isOccupied;
 
     @OneToOne
